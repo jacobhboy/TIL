@@ -1,0 +1,150 @@
+SELECT
+
+FROM
+
+WHERE(조건문)
+
+WHERE ( 개체 ) BEWEEN ( 단위1 ) and ( 단위2 ) == 단위1 이상 단위2 이하
+
+AS : 목록 변경
+
+WHERE price = 7000; -- 7000원인책 검색
+WHERE price <> 7000; -- 7000원이 아닌책 검색 
+LIKE = 문자열에서의 부등호 역할
+IS NULL , IS NOT NULL -- 해당 값이 NULL인지 아닌지 비교하는 문법.
+
+&& || (AND OR) 은 그냥 AND OR 쓰면댐 
+
+where price 
+
+IN NOT IN 
+
+WHERE price IN (10000 ,20000 ,30000)
+
+where publisher NOT IN ('굿스포츠' , '대한미디어') ;
+
+%: 0글자 이상의 문자
+
+_: 1글자 문자 
+
+ex) WHERE bookname LIKE  '_구%
+언더바는 무조건 한글자 %는 0부터 무한 
+-> 책이름에 2번쨰 글자가 '구'인 책 출력
+
+where 밑에 
+ORDER BY 속성이름 ASC / DESC;
+
+쓸수있다 ASC 는 오름차순 
+	DESC 는 내림차순
+
+집계함수 SELECT 에서 
+SUM(속성명) 
+AVG()
+MIN()
+MAX()
+COUNT()
+
+아무 것도 넣을 것 없을 때 ex 전체 몇 개? 별 넣으면 된다
+
+GROUP BY (그룹으로 묶을때)
+ex) SELECT custid , count(*) , sum(saleprice)
+FROM orders
+GROUP BY custid;
+
+HAVING = group by에 대한 조건 
+WHERE은 전체에 대한 조건이다
+
+중복제거 DISTINCT
+
+테이블 2개를 합치는 방법
+
+JOIN
+SELECT SUM(saleprice) as "박지성이 주문한 총 판매액"
+FROM customer ,orders
+WHERE customer.custid = orders.custid AND customer.name LIKE '박지성' ;
+
+테이블 별명 지어주기 
+SELECT c.name , o.saleprice
+FROM customer c ,orders o
+WHERE c.custid = o.custid;
+
+부속 지리문
+
+SELECT bookname
+FROM book
+where price = (select min(price) FROM book);
+
+select name
+from customer
+where custid = (select custid
+                from orders
+                where bookid=(SELECT bookid
+                                FROM book
+                                where price = (select min(price) FROM book)));
+
+
+select *
+from customer c inner join orders o
+on c.custid = o.custid;
+
+커스터머 와 오더를 조인하겠다 다르게 쓴거
+
+
+주문을 안한 사람도 null을 넣어서 라도 하겠다 ! left 쓰면 댐
+select *
+from customer c  left join orders o
+on c.custid = o.custid;
+
+
+
+
+
+
+
+
+
+------------------------
+SELECT COUNT(*)
+FROM customers;
+
+SELECT *
+FROM employees;
+
+SELECT website
+FROM customers
+WHERE name like 'Apple';
+
+SELECT name , credit_limit
+FROM customers
+ORDER BY credit_limit DESC;
+
+SELECT name , address
+FROM customers
+WHERE address like '%Bangalore%';
+
+SELECT DISTINCT job_title
+from employees;
+
+SELECT count(DISTINCT job_title) AS result
+FROM employees;
+
+SELECT first_name , job_title
+FROM employees
+WHERE job_title is 'programmer';
+
+SELECT first_name ,job_title
+FROM employees
+where manager_id is null;
+ 
+ SELECT first_name
+ FROM employees
+ WHERE job_name in ('sales Manager' ,'Stock Manager') and manager_id = (SELECT employee_id
+                     FROM employees
+                        WHERE first_name like 'Tommy');
+                        
+                        
+SELECT sum(quantity) as TOTAL_SUM , sum(quantity*unit_price) as TOTAL_PRICE
+FROM order_items
+GROUP BY order_id
+ORDER BY TOTAL_SUM DESC , TOTAL_PRICE DESC;
+
